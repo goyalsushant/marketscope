@@ -1,0 +1,62 @@
+.location-section {
+  padding: 20px;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background: #ffffff;
+}
+
+.section-heading h2 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.section-heading p {
+  margin: 5px 0 0;
+  color: #64748b;
+  font-size: 13px;
+}
+
+.location-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.location-grid label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.location-grid label > span {
+  color: #334155;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.location-grid select {
+  width: 100%;
+  padding: 9px 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 7px;
+  background: #ffffff;
+  color: #0f172a;
+  font-size: 13px;
+}
+
+.location-grid select:focus {
+  outline: 2px solid #bfdbfe;
+  border-color: #2563eb;
+}
+
+.location-grid select:disabled {
+  background: #f8fafc;
+  color: #94a3b8;
+}
+
+@media (max-width: 700px) {
+  .location-grid {
+    grid-template-columns: 1fr;
+  }
+}

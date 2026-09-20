@@ -1,16 +1,38 @@
 .boundary-map {
   width: 100%;
-  height: 500px;
+  height: 100%;
+  min-height: 500px;
   position: relative;
-  margin-top: 16px;
 }
 
 .boundary-map-container {
   width: 100%;
   height: 100%;
+  min-height: 500px;
 }
 
-.boundary-map .leaflet-container {
-  width: 100%;
-  height: 100%;
+.map-popup {
+  min-width: 160px;
+}
+
+.map-popup strong,
+.map-popup span {
+  display: block;
+}
+
+.map-popup span {
+  margin-top: 3px;
+  color: #64748b;
+  font-size: 12px;
+}
+
+.map-popup p {
+  margin: 8px 0;
+  color: #475569;
+  font-size: 12px;
+}
+
+.map-popup small {
+  color: #64748b;
+  font-size: 11px;
 }

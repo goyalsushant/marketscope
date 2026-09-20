@@ -1,5 +1,7 @@
 import type { Category } from "../types";
 
+import "./CategorySelector.css";
+
 interface Props {
   categories: Category[];
   selectedIds: string[];
@@ -20,7 +22,6 @@ export function CategorySelector({
           (id) => id !== categoryId
         )
       );
-
       return;
     }
 
@@ -31,26 +32,51 @@ export function CategorySelector({
   }
 
   return (
-    <fieldset>
-      <legend>Categories</legend>
+    <section className="category-section">
+      <div className="section-heading">
+        <h2>Store categories</h2>
 
-      <div className="category-options">
-        {categories.map((category) => (
-          <label key={category.id}>
-            <input
-              type="checkbox"
-              checked={selectedIds.includes(
-                category.id
-              )}
-              onChange={() =>
-                toggleCategory(category.id)
-              }
-            />
-
-            {category.name}
-          </label>
-        ))}
+        <p>
+          Select the categories relevant to this
+          market.
+        </p>
       </div>
-    </fieldset>
+
+      <div className="category-grid">
+        {categories.map((category) => {
+          const selected =
+            selectedIds.includes(category.id);
+
+          return (
+            <label
+              key={category.id}
+              className={
+                selected
+                  ? "category-card selected"
+                  : "category-card"
+              }
+            >
+              <input
+                type="checkbox"
+                checked={selected}
+                onChange={() =>
+                  toggleCategory(category.id)
+                }
+              />
+
+              <span className="category-card-name">
+                {category.name}
+              </span>
+
+              {selected && (
+                <span className="category-check">
+                  ✓
+                </span>
+              )}
+            </label>
+          );
+        })}
+      </div>
+    </section>
   );
 }

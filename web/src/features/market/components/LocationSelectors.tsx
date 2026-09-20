@@ -1,5 +1,7 @@
 import type { LocationOption } from "../types";
 
+import "./LocationSelectors.css";
+
 interface Props {
   countries: LocationOption[];
   states: LocationOption[];
@@ -33,81 +35,95 @@ export function LocationSelectors({
   loadingCities
 }: Props) {
   return (
-    <div className="location-selectors">
-      <label>
-        Country
+    <section className="location-section">
+      <div className="section-heading">
+        <h2>Market location</h2>
+        <p>
+          Select the country, state and city for
+          this market.
+        </p>
+      </div>
 
-        <select
-          value={countryId}
-          onChange={(event) =>
-            onCountryChange(event.target.value)
-          }
-          disabled={loadingCountries}
-        >
-          <option value="">
-            Select country
-          </option>
+      <div className="location-grid">
+        <label>
+          <span>Country</span>
 
-          {countries.map((country) => (
-            <option
-              key={country.id}
-              value={country.id}
-            >
-              {country.name}
+          <select
+            value={countryId}
+            onChange={(event) =>
+              onCountryChange(event.target.value)
+            }
+            disabled={loadingCountries}
+          >
+            <option value="">
+              Select country
             </option>
-          ))}
-        </select>
-      </label>
 
-      <label>
-        State
+            {countries.map((country) => (
+              <option
+                key={country.id}
+                value={country.id}
+              >
+                {country.name}
+              </option>
+            ))}
+          </select>
+        </label>
 
-        <select
-          value={stateId}
-          onChange={(event) =>
-            onStateChange(event.target.value)
-          }
-          disabled={!countryId || loadingStates}
-        >
-          <option value="">
-            Select state
-          </option>
+        <label>
+          <span>State</span>
 
-          {states.map((state) => (
-            <option
-              key={state.id}
-              value={state.id}
-            >
-              {state.name}
+          <select
+            value={stateId}
+            onChange={(event) =>
+              onStateChange(event.target.value)
+            }
+            disabled={
+              !countryId || loadingStates
+            }
+          >
+            <option value="">
+              Select state
             </option>
-          ))}
-        </select>
-      </label>
 
-      <label>
-        City
+            {states.map((state) => (
+              <option
+                key={state.id}
+                value={state.id}
+              >
+                {state.name}
+              </option>
+            ))}
+          </select>
+        </label>
 
-        <select
-          value={cityId}
-          onChange={(event) =>
-            onCityChange(event.target.value)
-          }
-          disabled={!stateId || loadingCities}
-        >
-          <option value="">
-            Select city
-          </option>
+        <label>
+          <span>City</span>
 
-          {cities.map((city) => (
-            <option
-              key={city.id}
-              value={city.id}
-            >
-              {city.name}
+          <select
+            value={cityId}
+            onChange={(event) =>
+              onCityChange(event.target.value)
+            }
+            disabled={
+              !stateId || loadingCities
+            }
+          >
+            <option value="">
+              Select city
             </option>
-          ))}
-        </select>
-      </label>
-    </div>
+
+            {cities.map((city) => (
+              <option
+                key={city.id}
+                value={city.id}
+              >
+                {city.name}
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
+    </section>
   );
 }

@@ -1,30 +1,38 @@
-import { type ChangeEvent, useState } from "react";
+import {
+  useState,
+  type ChangeEvent
+} from "react";
+
+import "./PortfolioUpload.css";
 import { uploadPortfolioFile } from "../api/portfolioApi";
 
 interface PortfolioUploadProps {
-  onUploaded: (
-    uploadId: string
-  ) => void;
+  onUploaded: (uploadId: string) => void;
 }
 
 export function PortfolioUpload({
   onUploaded
 }: PortfolioUploadProps) {
-  const [file, setFile] = useState<File | null>(null);
+  const [file, setFile] =
+    useState<File | null>(null);
 
-  const [uploading, setUploading] = useState(false);
+  const [uploading, setUploading] =
+    useState(false);
 
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] =
+    useState<string | null>(null);
 
-  const [success, setSuccess] = useState<{
-    fileName: string;
-    rowCount: number;
-  } | null>(null);
+  const [success, setSuccess] =
+    useState<{
+      fileName: string;
+      rowCount: number;
+    } | null>(null);
 
   function handleFileChange(
     event: ChangeEvent<HTMLInputElement>
   ) {
-    const selectedFile = event.target.files?.[0];
+    const selectedFile =
+      event.target.files?.[0] ?? null;
 
     setError(null);
     setSuccess(null);
@@ -34,11 +42,11 @@ export function PortfolioUpload({
       return;
     }
 
-    const isCsv = selectedFile.name
-      .toLowerCase()
-      .endsWith(".csv");
-
-    if (!isCsv) {
+    if (
+      !selectedFile.name
+        .toLowerCase()
+        .endsWith(".csv")
+    ) {
       setFile(null);
       setError("Please select a CSV file.");
       return;
@@ -49,7 +57,9 @@ export function PortfolioUpload({
 
   async function handleUpload() {
     if (!file) {
-      setError("Please select a portfolio CSV file.");
+      setError(
+        "Please select a portfolio CSV file."
+      );
       return;
     }
 
@@ -57,90 +67,90 @@ export function PortfolioUpload({
       setUploading(true);
       setError(null);
 
-      const result = await uploadPortfolioFile(file);
+      const result =
+        await uploadPortfolioFile(file);
 
       setSuccess({
         fileName: result.fileName,
         rowCount: result.rowCount
       });
 
-      onUploaded(
-        result.id
-      );
-
-    } catch (err) {
+      onUploaded(result.id);
+    } catch (error) {
       setError(
-        err instanceof Error
-          ? err.message
+        error instanceof Error
+          ? error.message
           : "Failed to upload portfolio."
       );
-
     } finally {
       setUploading(false);
-      setFile(null);
     }
   }
 
   return (
-    <section>
-      <h2>Portfolio Upload</h2>
+    <section className="portfolio-upload">
+      <div className="portfolio-upload-header">
+        <div>
+          <h2>Portfolio</h2>
 
-      <p>
-        Upload your portfolio CSV
-        containing your existing stores.
-      </p>
+          <p>
+            Upload your existing store portfolio
+            as a CSV file.
+          </p>
+        </div>
+      </div>
 
-      <input
-        type="file"
-        accept=".csv,text/csv"
-        onChange={handleFileChange}
-        disabled={uploading}
-      />
+      <div className="portfolio-upload-body">
+        <label className="file-dropzone">
+          <span className="file-dropzone-title">
+            {file
+              ? file.name
+              : "Choose a CSV file"}
+          </span>
 
-      {file && (
-        <p>
-          Selected:{" "}
-          <strong>
-            {file.name}
-          </strong>
-        </p>
-      )}
+          <span className="file-dropzone-help">
+            CSV files only
+          </span>
 
-      <button
-        type="button"
-        onClick={handleUpload}
-        disabled={
-          !file || uploading
-        }
-      >
-        {uploading
-          ? "Uploading..."
-          : "Upload Portfolio"}
-      </button>
+          <input
+            type="file"
+            accept=".csv,text/csv"
+            onChange={handleFileChange}
+            disabled={uploading}
+          />
+        </label>
 
-      {error && (
-        <p
-          role="alert"
-          style={{
-            color: "crimson"
-          }}
-        >
-          {error}
-        </p>
-      )}
+        {file && (
+          <button
+            type="button"
+            className="primary-button"
+            onClick={handleUpload}
+            disabled={uploading}
+          >
+            {uploading
+              ? "Uploading..."
+              : "Upload Portfolio"}
+          </button>
+        )}
 
-      {success && (
-        <p
-          aria-live="polite"
-          style={{
-            color: "green"
-          }}
-        >
-          Portfolio uploaded successfully.
-          {" "}
-          {success.rowCount} stores loaded.
-        </p>
-      )}
+        {error && (
+          <div className="form-error">
+            {error}
+          </div>
+        )}
+
+        {success && (
+          <div className="form-success">
+            <strong>
+              Portfolio uploaded
+            </strong>
+
+            <span>
+              {success.rowCount} stores loaded
+            </span>
+          </div>
+        )}
+      </div>
     </section>
   );
 }

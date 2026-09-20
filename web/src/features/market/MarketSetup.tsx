@@ -24,6 +24,7 @@ import { BoundaryMap } from "./components/BoundaryMap";
 import { boundingBoxAreaKm2 } from "./geo";
 import { PortfolioUpload } from "../../components/PortfolioUpload";
 import MarketDashboard from "./components/MarketDashboard";
+import "./MarketSetup.css";
 
 export function MarketSetup() {
     const [
@@ -329,129 +330,178 @@ export function MarketSetup() {
 
     return (
         <main className="market-setup">
-            <PortfolioUpload
-                onUploaded={
-                    setPortfolioUploadId
-                }
-            />
+            <div className="market-setup-container">
+                <header className="market-setup-header">
+                    <h1>Create market</h1>
 
-            <h1>
-                Create Market
-            </h1>
-
-            {error && (
-                <div className="error">
-                    {error}
-                </div>
-            )}
-
-            <LocationSelectors
-                countries={countries}
-                states={states}
-                cities={cities}
-                countryId={countryId}
-                stateId={stateId}
-                cityId={cityId}
-                onCountryChange={
-                    handleCountryChange
-                }
-                onStateChange={
-                    handleStateChange
-                }
-                onCityChange={
-                    handleCityChange
-                }
-                loadingCountries={false}
-                loadingStates={loading}
-                loadingCities={loading}
-            />
-
-            <CategorySelector
-                categories={categories}
-                selectedIds={
-                    selectedCategoryIds
-                }
-                onChange={
-                    setSelectedCategoryIds
-                }
-            />
-
-            {boundary && (
-                <>
-                    <BoundaryMap
-                        bounds={
-                            boundary.bounds
+                    <p>
+                        Upload your portfolio, choose the market
+                        location and categories, then define the
+                        geographic boundary on the map.
+                    </p>
+                </header>
+            </div>
+            <div className="market-setup-layout">
+                <section className="market-setup-form">
+                    <PortfolioUpload
+                        onUploaded={
+                            setPortfolioUploadId
                         }
-                        onBoundsChange={(
-                            bounds
-                        ) => {
-                            const areaKm2 =
-                                boundingBoxAreaKm2(
-                                    bounds
-                                );
-
-                            setBoundary({
-                                bounds,
-                                areaKm2
-                            });
-                        }}
+                    />
+                    <LocationSelectors
+                        countries={countries}
+                        states={states}
+                        cities={cities}
+                        countryId={countryId}
+                        stateId={stateId}
+                        cityId={cityId}
+                        onCountryChange={
+                            handleCountryChange
+                        }
+                        onStateChange={
+                            handleStateChange
+                        }
+                        onCityChange={
+                            handleCityChange
+                        }
+                        loadingCountries={false}
+                        loadingStates={loading}
+                        loadingCities={loading}
                     />
 
-                    <div
-                        className={
-                            boundary.areaKm2 >
-                                30
-                                ? "boundary-summary boundary-invalid"
-                                : "boundary-summary boundary-valid"
+                    <CategorySelector
+                        categories={categories}
+                        selectedIds={
+                            selectedCategoryIds
                         }
-                    >
-                        Boundary area:{" "}
-                        <strong>
-                            {boundary.areaKm2.toFixed(
-                                2
-                            )}{" "}
-                            km²
-                        </strong>
+                        onChange={
+                            setSelectedCategoryIds
+                        }
+                    />
+                    <div className="market-setup-actions">
+                        <button
+                            type="button"
+                            className="market-setup-secondary-action"
+                        // onClick={handleCancel}
+                        >
+                            Cancel
+                        </button>
 
-                        <span>
-                            {" "}
-                            / 30 km² maximum
-                        </span>
-
-                        {boundary.areaKm2 >
-                            30 && (
-                                <p>
-                                    Reduce the
-                                    boundary area
-                                    to 30 km²
-                                    or less to
-                                    continue.
-                                </p>
-                            )}
+                        <button
+                            type="button"
+                            disabled={
+                                !cityId ||
+                                selectedCategoryIds.length ===
+                                0 ||
+                                !portfolioUploadId ||
+                                !boundary ||
+                                boundary.areaKm2 >
+                                30 ||
+                                creatingMarket
+                            }
+                            onClick={
+                                handleCreateMarket
+                            }
+                            className="market-setup-primary-action"
+                        >
+                            {creatingMarket
+                                ? "Creating Market..."
+                                : "Create Market"}
+                        </button>
+                        {error && (
+                            <div className="error">
+                                {error}
+                            </div>
+                        )}
                     </div>
-                </>
-            )}
+                </section>
+                <aside className="market-setup-map-column">
+                    <div className="market-setup-map-card">
+                        <header className="market-setup-map-header">
+                            <div>
+                                <h2>Market boundary</h2>
 
-            <button
-                type="button"
-                disabled={
-                    !cityId ||
-                    selectedCategoryIds.length ===
-                    0 ||
-                    !portfolioUploadId ||
-                    !boundary ||
-                    boundary.areaKm2 >
-                    30 ||
-                    creatingMarket
-                }
-                onClick={
-                    handleCreateMarket
-                }
-            >
-                {creatingMarket
-                    ? "Creating Market..."
-                    : "Create Market"}
-            </button>
+                                <p>
+                                    Adjust the boundary to define the
+                                    geographic market area.
+                                </p>
+                            </div>
+                        </header>
+                        <div className="market-setup-map">
+                            {
+                                boundary ? <BoundaryMap
+                                    bounds={
+                                        boundary.bounds
+                                    }
+                                    onBoundsChange={(
+                                        bounds
+                                    ) => {
+                                        const areaKm2 =
+                                            boundingBoxAreaKm2(
+                                                bounds
+                                            );
+
+                                        setBoundary({
+                                            bounds,
+                                            areaKm2
+                                        });
+                                    }}
+                                /> : (
+                                    <div className="market-map-placeholder">
+                                        <strong>
+                                            Select a city
+                                        </strong>
+
+                                        <span>
+                                            The city boundary
+                                            will appear here
+                                            once a city is
+                                            selected.
+                                        </span>
+                                    </div>
+                                )
+                            }
+                        </div>
+                        {boundary && (
+                            <div
+                                className={
+                                    boundary.areaKm2 >
+                                        30
+                                        ? "boundary-summary boundary-invalid"
+                                        : "boundary-summary boundary-valid"
+                                }
+                            >
+                                <div>
+                                    <span>
+                                        Boundary area
+                                    </span>
+                                    <strong>
+                                        {boundary?.areaKm2.toFixed(
+                                            2
+                                        )}{" "}
+                                        km²
+                                    </strong>
+                                </div>
+                                <small>
+                                    Maximum allowed:
+                                    {" "}
+                                    30 km²
+                                </small>
+                                {boundary.areaKm2 >
+                                    30 && (
+                                        <p>
+                                            Reduce the
+                                            boundary area
+                                            to 30 km² or
+                                            less to
+                                            continue.
+                                        </p>
+                                    )}
+                            </div>
+                        )}
+                    </div>
+                </aside>
+            </div>
         </main>
     );
 }

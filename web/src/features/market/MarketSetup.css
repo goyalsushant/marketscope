@@ -1,0 +1,333 @@
+.market-setup {
+  min-height: 100%;
+  padding: 32px 24px 48px;
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+.market-setup-container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.market-setup-header {
+  max-width: 760px;
+  margin: 0 auto 28px;
+  text-align: center;
+}
+
+.market-setup-header h1 {
+  margin: 0;
+  font-size: 28px;
+  line-height: 1.2;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.market-setup-header p {
+  margin: 8px auto 0;
+  max-width: 680px;
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/*
+ * Main setup area.
+ *
+ * The form is intentionally narrower than the map
+ * because the map needs more horizontal space.
+ */
+.market-setup-layout {
+  display: grid;
+  grid-template-columns:
+    minmax(360px, 0.85fr)
+    minmax(560px, 1.35fr);
+  gap: 24px;
+  align-items: start;
+}
+
+/*
+ * Left side
+ */
+.market-setup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+/*
+ * Right side
+ */
+.market-setup-map-column {
+  min-width: 0;
+  position: sticky;
+  top: 24px;
+}
+
+.market-setup-map-card {
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow:
+    0 1px 2px rgb(15 23 42 / 0.04);
+}
+
+.market-setup-map-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 82px;
+  padding: 18px 20px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.market-setup-map-header h2 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 650;
+  color: #0f172a;
+}
+
+.market-setup-map-header p {
+  margin: 5px 0 0;
+  color: #64748b;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+/*
+ * The map itself.
+ */
+.market-setup-map {
+  position: relative;
+  width: 100%;
+  height: 560px;
+  background: #e2e8f0;
+}
+
+.market-setup-map .boundary-map {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+
+.market-setup-map .boundary-map-container {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+
+/*
+ * Shown before a city is selected.
+ */
+.market-map-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 32px;
+  text-align: center;
+  background: #f8fafc;
+  color: #64748b;
+}
+
+.market-map-placeholder strong {
+  color: #334155;
+  font-size: 14px;
+}
+
+.market-map-placeholder span {
+  max-width: 300px;
+  margin-top: 6px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/*
+ * Boundary information shown directly underneath
+ * the map.
+ */
+.boundary-summary {
+  padding: 14px 18px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.boundary-summary > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.boundary-summary span {
+  color: #475569;
+  font-size: 13px;
+}
+
+.boundary-summary strong {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.boundary-summary small {
+  display: block;
+  margin-top: 3px;
+  color: #94a3b8;
+  font-size: 11px;
+}
+
+.boundary-summary p {
+  margin: 8px 0 0;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.boundary-valid {
+  background: #f8fafc;
+}
+
+.boundary-valid strong {
+  color: #15803d;
+}
+
+.boundary-invalid {
+  background: #fff7ed;
+}
+
+.boundary-invalid strong {
+  color: #c2410c;
+}
+
+.boundary-invalid p {
+  color: #c2410c;
+}
+
+/*
+ * Form actions.
+ */
+.market-setup-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  padding-top: 4px;
+}
+
+.market-setup-actions button {
+  min-height: 38px;
+  padding: 9px 16px;
+  border-radius: 7px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.market-setup-secondary-action {
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #334155;
+}
+
+.market-setup-secondary-action:hover {
+  background: #f8fafc;
+  border-color: #94a3b8;
+}
+
+.market-setup-primary-action {
+  border: 1px solid #2563eb;
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.market-setup-primary-action:hover:not(:disabled) {
+  background: #1d4ed8;
+  border-color: #1d4ed8;
+}
+
+.market-setup-actions button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/*
+ * Error message is kept below the actions instead
+ * of appearing beside the buttons.
+ */
+.market-setup-error {
+  padding: 10px 12px;
+  border: 1px solid #fecaca;
+  border-radius: 7px;
+  background: #fef2f2;
+  color: #b91c1c;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+/*
+ * Tablet
+ */
+@media (max-width: 1100px) {
+  .market-setup-layout {
+    grid-template-columns:
+      minmax(320px, 0.9fr)
+      minmax(480px, 1.1fr);
+    gap: 18px;
+  }
+
+  .market-setup-map {
+    height: 520px;
+  }
+}
+
+/*
+ * Mobile / narrow screens
+ */
+@media (max-width: 850px) {
+  .market-setup {
+    padding: 24px 16px 40px;
+  }
+
+  .market-setup-header {
+    margin-bottom: 22px;
+  }
+
+  .market-setup-header h1 {
+    font-size: 24px;
+  }
+
+  .market-setup-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .market-setup-map-column {
+    position: static;
+  }
+
+  .market-setup-map {
+    height: 450px;
+  }
+}
+
+@media (max-width: 520px) {
+  .market-setup {
+    padding: 18px 12px 32px;
+  }
+
+  .market-setup-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .market-setup-actions button {
+    width: 100%;
+  }
+
+  .market-setup-map {
+    height: 400px;
+  }
+}
