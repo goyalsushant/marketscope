@@ -1,0 +1,11 @@
+.boundary-map {
+  width: 100%;
+  height: 500px;
+  position: relative;
+  margin-top: 16px;
+}
+
+.boundary-map .leaflet-container {
+  width: 100%;
+  height: 100%;
+}
