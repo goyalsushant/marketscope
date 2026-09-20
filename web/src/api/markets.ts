@@ -20,6 +20,32 @@ export interface MarketPortfolioResponse {
   stores: PortfolioStore[];
 }
 
+export interface DiscoveredStoresResponse {
+  marketId: string;
+  stores: DiscoveredStore[];
+}
+
+async function getErrorMessage(
+  response: Response,
+  fallback: string
+): Promise<string> {
+  try {
+    const body = await response.json();
+
+    if (
+      body &&
+      typeof body.message === "string"
+    ) {
+      return body.message;
+    }
+  } catch {
+    // Ignore invalid/non-JSON error responses.
+  }
+
+  return fallback;
+}
+
+
 export async function getMarketPortfolio(
   marketId: string
 ): Promise<MarketPortfolioResponse> {
@@ -28,25 +54,12 @@ export async function getMarketPortfolio(
   );
 
   if (!response.ok) {
-    let message =
-      "Failed to load market portfolio";
-
-    try {
-      const body =
-        await response.json();
-
-      if (
-        body &&
-        typeof body.message ===
-        "string"
-      ) {
-        message = body.message;
-      }
-    } catch {
-      // Keep default error message.
-    }
-
-    throw new Error(message);
+    throw new Error(
+      await getErrorMessage(
+        response,
+        "Failed to discover stores"
+      )
+    );
   }
 
   return response.json();
@@ -64,7 +77,7 @@ export interface DiscoveredStore {
 
 export async function discoverStores(
   marketId: string
-) {
+): Promise<DiscoveredStoresResponse> {
   const response = await fetch(
     `/api/markets/${marketId}/discovered-stores/discover`,
     {
@@ -78,15 +91,12 @@ export async function discoverStores(
     );
   }
 
-  return response.json() as Promise<{
-    marketId: string;
-    stores: DiscoveredStore[];
-  }>;
+  return response.json()
 }
 
 export async function getDiscoveredStores(
   marketId: string
-) {
+): Promise<DiscoveredStoresResponse> {
   const response = await fetch(
     `/api/markets/${marketId}/discovered-stores`
   );
@@ -97,8 +107,5 @@ export async function getDiscoveredStores(
     );
   }
 
-  return response.json() as Promise<{
-    marketId: string;
-    stores: DiscoveredStore[];
-  }>;
+  return response.json()
 }
