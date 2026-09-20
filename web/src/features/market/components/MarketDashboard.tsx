@@ -1,383 +1,3 @@
-// import {
-//     useEffect,
-//     useMemo,
-//     useState,
-//     type ReactNode
-// } from "react";
-// import { getMarketPortfolio, type PortfolioStore } from "../../../api/markets";
-// import "./MarketDashboard.css";
-// import type { PortfolioMapStore } from "./BoundaryMap";
-
-
-// interface MarketDashboardProps {
-//     marketId: string;
-//     map?: ReactNode;
-// }
-
-// export default function MarketDashboard({
-//     marketId,
-//     map
-// }: MarketDashboardProps) {
-//     const [
-//         portfolioStores,
-//         setPortfolioStores
-//     ] = useState<PortfolioStore[]>([]);
-
-//     const [
-//         showPortfolioInside,
-//         setShowPortfolioInside
-//     ] = useState(true);
-
-//     const [
-//         showPortfolioOutside,
-//         setShowPortfolioOutside
-//     ] = useState(true);
-
-//     const [
-//         loading,
-//         setLoading
-//     ] = useState(true);
-
-//     const [
-//         error,
-//         setError
-//     ] = useState<string | null>(null);
-
-//     useEffect(() => {
-//         let cancelled = false;
-
-//         async function loadPortfolio() {
-//             try {
-//                 setLoading(true);
-//                 setError(null);
-
-//                 const result =
-//                     await getMarketPortfolio(
-//                         marketId
-//                     );
-
-//                 if (!cancelled) {
-//                     setPortfolioStores(
-//                         result.stores
-//                     );
-//                 }
-//             } catch (error) {
-//                 if (!cancelled) {
-//                     setError(
-//                         error instanceof Error
-//                             ? error.message
-//                             : "Failed to load market portfolio"
-//                     );
-//                 }
-//             } finally {
-//                 if (!cancelled) {
-//                     setLoading(false);
-//                 }
-//             }
-//         }
-
-//         void loadPortfolio();
-
-//         return () => {
-//             cancelled = true;
-//         };
-//     }, [marketId]);
-
-//     const insideStores = useMemo(
-//         () =>
-//             portfolioStores.filter(
-//                 (store) =>
-//                     store.insideBoundary
-//             ),
-//         [portfolioStores]
-//     );
-
-//     const outsideStores = useMemo(
-//         () =>
-//             portfolioStores.filter(
-//                 (store) =>
-//                     !store.insideBoundary
-//             ),
-//         [portfolioStores]
-//     );
-
-//     const visibleInsideStores =
-//         useMemo(
-//             () =>
-//                 showPortfolioInside
-//                     ? insideStores
-//                     : [],
-//             [
-//                 showPortfolioInside,
-//                 insideStores
-//             ]
-//         );
-
-//     const visibleOutsideStores =
-//         useMemo(
-//             () =>
-//                 showPortfolioOutside
-//                     ? outsideStores
-//                     : [],
-//             [
-//                 showPortfolioOutside,
-//                 outsideStores
-//             ]
-//         );
-
-//     const mapInsideStores: PortfolioMapStore[] =
-//         visibleInsideStores;
-
-//     const mapOutsideStores: PortfolioMapStore[] =
-//         visibleOutsideStores;
-
-//     if (loading) {
-//         return (
-//             <main className="market-dashboard">
-//                 <div className="dashboard-loading">
-//                     Loading market...
-//                 </div>
-//             </main>
-//         );
-//     }
-
-//     if (error) {
-//         return (
-//             <main className="market-dashboard">
-//                 <div className="dashboard-error">
-//                     <h2>
-//                         Unable to load market
-//                     </h2>
-
-//                     <p>{error}</p>
-//                 </div>
-//             </main>
-//         );
-//     }
-
-//     return (
-//         <main className="market-dashboard">
-//             <header className="dashboard-header">
-//                 <div>
-//                     <h1>
-//                         Market Dashboard
-//                     </h1>
-
-//                     <p>
-//                         Portfolio stores within and
-//                         outside the selected market
-//                         boundary.
-//                     </p>
-//                 </div>
-
-//                 <div className="dashboard-summary">
-//                     <div className="summary-card">
-//                         <span>
-//                             Total portfolio
-//                         </span>
-
-//                         <strong>
-//                             {portfolioStores.length}
-//                         </strong>
-//                     </div>
-
-//                     <div className="summary-card">
-//                         <span>
-//                             Inside boundary
-//                         </span>
-
-//                         <strong>
-//                             {insideStores.length}
-//                         </strong>
-//                     </div>
-
-//                     <div className="summary-card">
-//                         <span>
-//                             Outside boundary
-//                         </span>
-
-//                         <strong>
-//                             {outsideStores.length}
-//                         </strong>
-//                     </div>
-//                 </div>
-//             </header>
-
-//             <section className="dashboard-controls">
-//                 <div>
-//                     <h2>
-//                         Map layers
-//                     </h2>
-
-//                     <p>
-//                         Toggle portfolio layers
-//                         independently.
-//                     </p>
-//                 </div>
-
-//                 <div className="layer-controls">
-//                     <label className="layer-control">
-//                         <input
-//                             type="checkbox"
-//                             checked={
-//                                 showPortfolioInside
-//                             }
-//                             onChange={(event) =>
-//                                 setShowPortfolioInside(
-//                                     event.target.checked
-//                                 )
-//                             }
-//                         />
-
-//                         <span className="layer-dot inside" />
-
-//                         <span>
-//                             Portfolio inside boundary
-//                         </span>
-
-//                         <strong>
-//                             {insideStores.length}
-//                         </strong>
-//                     </label>
-
-//                     <label className="layer-control">
-//                         <input
-//                             type="checkbox"
-//                             checked={
-//                                 showPortfolioOutside
-//                             }
-//                             onChange={(event) =>
-//                                 setShowPortfolioOutside(
-//                                     event.target.checked
-//                                 )
-//                             }
-//                         />
-
-//                         <span className="layer-dot outside" />
-
-//                         <span>
-//                             Portfolio outside boundary
-//                         </span>
-
-//                         <strong>
-//                             {outsideStores.length}
-//                         </strong>
-//                     </label>
-
-//                     <div className="layer-control discovered-disabled">
-//                         <span className="layer-dot discovered" />
-
-//                         <span>
-//                             Discovered stores
-//                         </span>
-
-//                         <span className="coming-soon">
-//                             Coming next
-//                         </span>
-//                     </div>
-//                 </div>
-//             </section>
-
-//             <section className="dashboard-content">
-//                 <div className="dashboard-map">
-//                     {map}
-//                 </div>
-
-//                 <aside className="dashboard-sidebar">
-//                     <div className="store-list-header">
-//                         <div>
-//                             <h2>
-//                                 Portfolio stores
-//                             </h2>
-
-//                             <p>
-//                                 {portfolioStores.length} stores
-//                             </p>
-//                         </div>
-//                     </div>
-
-//                     <div className="store-list">
-//                         {portfolioStores.length ===
-//                             0 ? (
-//                             <div className="empty-state">
-//                                 No portfolio stores found.
-//                             </div>
-//                         ) : (
-//                             portfolioStores.map(
-//                                 (store) => (
-//                                     <StoreListItem
-//                                         key={store.id}
-//                                         store={store}
-//                                     />
-//                                 )
-//                             )
-//                         )}
-//                     </div>
-//                 </aside>
-//             </section>
-
-//             <section className="dashboard-debug">
-//                 <div>
-//                     Visible inside:
-//                     {" "}
-//                     {visibleInsideStores.length}
-//                 </div>
-
-//                 <div>
-//                     Visible outside:
-//                     {" "}
-//                     {visibleOutsideStores.length}
-//                 </div>
-//             </section>
-//         </main>
-//     );
-// }
-
-// interface StoreListItemProps {
-//     store: PortfolioStore;
-// }
-
-// function StoreListItem({
-//     store
-// }: StoreListItemProps) {
-//     return (
-//         <article className="store-list-item">
-//             <div className="store-list-item-main">
-//                 <div className="store-status-row">
-//                     <span
-//                         className={
-//                             store.insideBoundary
-//                                 ? "store-status inside"
-//                                 : "store-status outside"
-//                         }
-//                     >
-//                         {store.insideBoundary
-//                             ? "Inside"
-//                             : "Outside"}
-//                     </span>
-
-//                     <span className="store-category">
-//                         {store.category}
-//                     </span>
-//                 </div>
-
-//                 <h3>
-//                     {store.storeName}
-//                 </h3>
-
-//                 <p>
-//                     {store.address}
-//                 </p>
-
-//                 <small>
-//                     {store.city},{" "}
-//                     {store.state}
-//                 </small>
-//             </div>
-//         </article>
-//     );
-// }
-
 import {
     useEffect,
     useMemo,
@@ -735,28 +355,38 @@ export default function MarketDashboard({
 
     return (
         <main className="market-dashboard">
+            <div className="dashboard-inner"></div>
             <header className="dashboard-header">
-                <div>
-                    <h1>
-                        Market Dashboard
-                    </h1>
+                <div className="dashboard-header-top">
+                    <div className="dashboard-title">
+                        <span className="dashboard-eyebrow">
+                            MARKET OVERVIEW
+                        </span>
 
-                    <p>
-                        Portfolio stores within and
-                        outside the selected market
-                        boundary.
-                    </p>
+                        <h1>
+                            Market Dashboard
+                        </h1>
+
+                        <p>
+                            Portfolio stores and
+                            discovered stores within
+                            the selected market boundary.
+                        </p>
+                    </div>
+                    <div className="dashboard-header-actions">
+                        <button
+                            type="button"
+                            onClick={handleDiscoverStores}
+                            disabled={discovering}
+                            className="discover-stores-button"
+                        >
+                            {discovering
+                                ? "Discovering..."
+                                : "Discover Stores"}
+                        </button>
+                    </div>
                 </div>
-                <button
-                    type="button"
-                    onClick={handleDiscoverStores}
-                    disabled={discovering}
-                    className="discover-stores-button"
-                >
-                    {discovering
-                        ? "Discovering..."
-                        : "Discover Stores"}
-                </button>
+
 
 
                 <div className="dashboard-summary">
@@ -798,12 +428,17 @@ export default function MarketDashboard({
                             {discoveredStores.length}
                         </strong>
                     </div>
-
                 </div>
             </header>
 
+            {error && (
+                <div className="dashboard-action-error">
+                    {error}
+                </div>
+            )}
+
             <section className="dashboard-controls">
-                <div>
+                <div className="dashboard-controls-heading">
                     <h2>
                         Map layers
                     </h2>
@@ -893,6 +528,18 @@ export default function MarketDashboard({
 
             <section className="dashboard-content">
                 <div className="dashboard-map">
+                    <div className="map-overlay-header">
+                        <div>
+                            <h2>
+                                Market map
+                            </h2>
+
+                            <p>
+                                Store locations within
+                                the selected boundary.
+                            </p>
+                        </div>
+                    </div>
                     <BoundaryMap
                         bounds={boundary}
                         // onBoundsChange={() => {
@@ -913,76 +560,80 @@ export default function MarketDashboard({
                 </div>
 
                 <aside className="dashboard-sidebar">
-                    <div className="store-list-header">
-                        <div>
-                            <h2>
-                                Portfolio stores
-                            </h2>
+                    <div className="dashboard-sidebar-content">
+                        <section className="sidebar-section">
+                            <div className="store-list-header">
+                                <div>
+                                    <h2>
+                                        Portfolio stores
+                                    </h2>
 
-                            <p>
-                                {
-                                    portfolioStores.length
-                                }{" "}
-                                stores
-                            </p>
-                        </div>
-                    </div>
-
-                    <div className="store-list">
-                        {portfolioStores.length ===
-                            0 ? (
-                            <div className="empty-state">
-                                No portfolio stores
-                                found.
+                                    <p>
+                                        {
+                                            portfolioStores.length
+                                        }{" "}
+                                        stores
+                                    </p>
+                                </div>
                             </div>
-                        ) : (
-                            portfolioStores.map(
-                                (store) => (
-                                    <StoreListItem
-                                        key={
-                                            store.id
-                                        }
-                                        store={
-                                            store
-                                        }
-                                    />
-                                )
-                            )
-                        )}
+                            <div className="store-list">
+                                {portfolioStores.length ===
+                                    0 ? (
+                                    <div className="empty-state">
+                                        No portfolio stores
+                                        found.
+                                    </div>
+                                ) : (
+                                    portfolioStores.map(
+                                        (store) => (
+                                            <StoreListItem
+                                                key={
+                                                    store.id
+                                                }
+                                                store={
+                                                    store
+                                                }
+                                            />
+                                        )
+                                    )
+                                )}
+                            </div>
+                        </section>
+                        <section className="sidebar-section discovered-sidebar-section">
+                            <div className="store-list-header">
+                                <div>
+                                    <h2>
+                                        Discovered stores
+                                    </h2>
+
+                                    <p>
+                                        {discoveredStores.length} stores
+                                    </p>
+                                </div>
+                            </div>
+                            <div className="store-list">
+                                {discoveredStores.length === 0 ? (
+                                    <div className="empty-state">
+                                        No discovered stores yet.
+                                    </div>
+                                ) : (
+                                    discoveredStores.map(
+                                        (store) => (
+                                            <DiscoveredStoreListItem
+                                                key={store.id}
+                                                store={store}
+                                            />
+                                        )
+                                    )
+                                )}
+                            </div>
+                        </section>
                     </div>
+
+
+
                 </aside>
             </section>
-            <section className="discovered-store-section">
-                <div className="store-list-header">
-                    <div>
-                        <h2>
-                            Discovered stores
-                        </h2>
-
-                        <p>
-                            {discoveredStores.length} stores
-                        </p>
-                    </div>
-                </div>
-
-                <div className="store-list">
-                    {discoveredStores.length === 0 ? (
-                        <div className="empty-state">
-                            No discovered stores yet.
-                        </div>
-                    ) : (
-                        discoveredStores.map(
-                            (store) => (
-                                <DiscoveredStoreListItem
-                                    key={store.id}
-                                    store={store}
-                                />
-                            )
-                        )
-                    )}
-                </div>
-            </section>
-
         </main>
     );
 }
