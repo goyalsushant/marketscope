@@ -220,10 +220,7 @@ export function BoundaryMap({
         center={center}
         zoom={12}
         scrollWheelZoom
-        style={{
-          height: "500px",
-          width: "100%"
-        }}
+        className="boundary-map-container"
       >
         <TileLayer
           attribution="&copy; OpenStreetMap contributors"
@@ -260,63 +257,10 @@ export function BoundaryMap({
 
         <PortfolioMarkers
           stores={portfolioOutside}
+          discoveredStores={discoveredStores}
           color="#64748b"
         />
       </MapContainer>
     </div>
   );
 }
-
-// export function BoundaryMap({
-//   bounds,
-//   onBoundsChange,
-//   insideStores = [],
-//   outsideStores = []
-// }: Props) {
-//   const center: [number, number] = [
-//     (bounds.south + bounds.north) / 2,
-//     (bounds.west + bounds.east) / 2
-//   ];
-
-//   return (
-//     <div className="boundary-map">
-//       <MapContainer
-//         center={center}
-//         zoom={12}
-//         scrollWheelZoom
-//         style={{
-//           height: "500px",
-//           width: "100%"
-//         }}
-//       >
-//         <TileLayer
-//           attribution="&copy; OpenStreetMap contributors"
-//           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-//         />
-
-//         <MapViewport
-//           bounds={bounds}
-//         />
-
-//         <EditableBoundary
-//           bounds={bounds}
-//           onBoundsChange={
-//             onBoundsChange ??
-//             (() => {})
-//           }
-//         />
-
-//         <PortfolioMarkers
-//           stores={insideStores}
-//           color="#16a34a"
-//         />
-
-//         <PortfolioMarkers
-//           stores={outsideStores}
-//           color="#dc2626"
-//         />
-//       </MapContainer>
-//     </div>
-//   );
-// }
-

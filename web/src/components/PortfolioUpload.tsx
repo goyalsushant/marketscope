@@ -1,11 +1,5 @@
-import {
-  type ChangeEvent,
-  useState
-} from "react";
-
-import {
-  uploadPortfolioFile
-} from "../api/portfolioApi";
+import { type ChangeEvent, useState } from "react";
+import { uploadPortfolioFile } from "../api/portfolioApi";
 
 interface PortfolioUploadProps {
   onUploaded: (
@@ -16,26 +10,21 @@ interface PortfolioUploadProps {
 export function PortfolioUpload({
   onUploaded
 }: PortfolioUploadProps) {
-  const [file, setFile] =
-    useState<File | null>(null);
+  const [file, setFile] = useState<File | null>(null);
 
-  const [uploading, setUploading] =
-    useState(false);
+  const [uploading, setUploading] = useState(false);
 
-  const [error, setError] =
-    useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
-  const [success, setSuccess] =
-    useState<{
-      fileName: string;
-      rowCount: number;
-    } | null>(null);
+  const [success, setSuccess] = useState<{
+    fileName: string;
+    rowCount: number;
+  } | null>(null);
 
   function handleFileChange(
     event: ChangeEvent<HTMLInputElement>
   ) {
-    const selectedFile =
-      event.target.files?.[0];
+    const selectedFile = event.target.files?.[0];
 
     setError(null);
     setSuccess(null);
@@ -45,16 +34,13 @@ export function PortfolioUpload({
       return;
     }
 
-    const isCsv =
-      selectedFile.name
-        .toLowerCase()
-        .endsWith(".csv");
+    const isCsv = selectedFile.name
+      .toLowerCase()
+      .endsWith(".csv");
 
     if (!isCsv) {
       setFile(null);
-      setError(
-        "Please select a CSV file."
-      );
+      setError("Please select a CSV file.");
       return;
     }
 
@@ -63,9 +49,7 @@ export function PortfolioUpload({
 
   async function handleUpload() {
     if (!file) {
-      setError(
-        "Please select a portfolio CSV file."
-      );
+      setError("Please select a portfolio CSV file.");
       return;
     }
 
@@ -73,31 +57,27 @@ export function PortfolioUpload({
       setUploading(true);
       setError(null);
 
-      const result =
-        await uploadPortfolioFile(file);
+      const result = await uploadPortfolioFile(file);
 
       setSuccess({
-        fileName:
-          result.fileName,
-        rowCount:
-          result.rowCount
+        fileName: result.fileName,
+        rowCount: result.rowCount
       });
 
       onUploaded(
         result.id
       );
 
-      console.log('hello try')
     } catch (err) {
       setError(
         err instanceof Error
           ? err.message
           : "Failed to upload portfolio."
       );
-      console.log('hello catch')
 
     } finally {
       setUploading(false);
+      setFile(null);
     }
   }
 
@@ -151,6 +131,7 @@ export function PortfolioUpload({
 
       {success && (
         <p
+          aria-live="polite"
           style={{
             color: "green"
           }}

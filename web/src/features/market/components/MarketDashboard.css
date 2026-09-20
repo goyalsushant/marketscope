@@ -206,6 +206,11 @@
   color: #b91c1c;
 }
 
+.store-status.discovered {
+  background: #ffedd5;
+  color: #c2410c;
+}
+
 .store-category {
   color: #64748b;
   font-size: 12px;
