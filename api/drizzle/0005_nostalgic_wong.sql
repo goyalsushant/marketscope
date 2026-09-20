@@ -1,0 +1,2 @@
+ALTER TABLE "markets" ADD COLUMN "portfolio_upload_id" uuid NOT NULL;--> statement-breakpoint
+ALTER TABLE "markets" ADD CONSTRAINT "markets_portfolio_upload_id_portfolio_uploads_id_fk" FOREIGN KEY ("portfolio_upload_id") REFERENCES "public"."portfolio_uploads"("id") ON DELETE no action ON UPDATE no action;

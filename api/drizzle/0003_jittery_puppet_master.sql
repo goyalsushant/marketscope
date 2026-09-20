@@ -1,0 +1,2 @@
+ALTER TABLE "discovered_stores" ALTER COLUMN "latitude" SET DATA TYPE numeric(10, 7) USING "latitude"::numeric;--> statement-breakpoint
+ALTER TABLE "discovered_stores" ALTER COLUMN "longitude" SET DATA TYPE numeric(10, 7) USING "longitude"::numeric;
