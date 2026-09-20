@@ -1,299 +1,10 @@
-/* .market-dashboard {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  min-height: 0;
-  background: #f8fafc;
-  color: #0f172a;
-}
-
-.dashboard-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 24px;
-  padding: 24px;
-  border-bottom: 1px solid #e2e8f0;
-  background: #ffffff;
-}
-
-.dashboard-header h1 {
-  margin: 0;
-  font-size: 24px;
-  font-weight: 700;
-}
-
-.dashboard-header p {
-  margin: 6px 0 0;
-  color: #64748b;
-}
-
-.dashboard-summary {
-  display: flex;
-  gap: 12px;
-}
-
-.summary-card {
-  min-width: 120px;
-  padding: 12px 16px;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  background: #ffffff;
-}
-
-.summary-card span {
-  display: block;
-  margin-bottom: 4px;
-  color: #64748b;
-  font-size: 12px;
-}
-
-.summary-card strong {
-  font-size: 20px;
-}
-
-.dashboard-controls {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  padding: 16px 24px;
-  border-bottom: 1px solid #e2e8f0;
-  background: #ffffff;
-}
-
-.dashboard-controls h2 {
-  margin: 0;
-  font-size: 15px;
-}
-
-.dashboard-controls p {
-  margin: 4px 0 0;
-  color: #64748b;
-  font-size: 13px;
-}
-
-.layer-controls {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.layer-control {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: #334155;
-  font-size: 13px;
-  cursor: pointer;
-}
-
-.layer-control input {
-  margin: 0;
-}
-
-.layer-control strong {
-  color: #0f172a;
-}
-
-.layer-dot {
-  width: 10px;
-  height: 10px;
-  flex: 0 0 10px;
-  border-radius: 50%;
-}
-
-.layer-dot.inside {
-  background: #2563eb;
-}
-
-.layer-dot.outside {
-  background: #64748b;
-}
-
-.layer-dot.discovered {
-  background: #f97316;
-}
-
-.discovered-disabled {
-  color: #94a3b8;
-  cursor: default;
-}
-
-.coming-soon {
-  padding: 2px 6px;
-  border-radius: 4px;
-  background: #f1f5f9;
-  color: #64748b;
-  font-size: 11px;
-}
-
-.dashboard-content {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 360px;
-  flex: 1;
-  min-height: 0;
-}
-
-.dashboard-map {
-  position: relative;
-  min-width: 0;
-  min-height: 500px;
-  overflow: hidden;
-  background: #e2e8f0;
-}
-
-.dashboard-sidebar {
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-  border-left: 1px solid #e2e8f0;
-  background: #ffffff;
-}
-
-.store-list-header {
-  padding: 16px;
-  border-bottom: 1px solid #e2e8f0;
-}
-
-.store-list-header h2 {
-  margin: 0;
-  font-size: 16px;
-}
-
-.store-list-header p {
-  margin: 4px 0 0;
-  color: #64748b;
-  font-size: 13px;
-}
-
-.store-list {
-  flex: 1;
-  min-height: 0;
-  overflow-y: auto;
-}
-
-.store-list-item {
-  padding: 14px 16px;
-  border-bottom: 1px solid #f1f5f9;
-}
-
-.store-list-item:hover {
-  background: #f8fafc;
-}
-
-.store-status-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 6px;
-}
-
-.store-status {
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-size: 11px;
-  font-weight: 600;
-}
-
-.store-status.inside {
-  background: #dbeafe;
-  color: #1d4ed8;
-}
-
-.store-status.outside {
-  background: #fee2e2;
-  color: #b91c1c;
-}
-
-.store-status.discovered {
-  background: #ffedd5;
-  color: #c2410c;
-}
-
-.store-category {
-  color: #64748b;
-  font-size: 12px;
-}
-
-.store-list-item h3 {
-  margin: 0 0 4px;
-  font-size: 14px;
-}
-
-.store-list-item p {
-  margin: 0 0 3px;
-  color: #475569;
-  font-size: 12px;
-}
-
-.store-list-item small {
-  color: #94a3b8;
-  font-size: 11px;
-}
-
-.empty-state {
-  padding: 32px 16px;
-  text-align: center;
-  color: #64748b;
-}
-
-.dashboard-loading,
-.dashboard-error {
-  display: grid;
-  min-height: 400px;
-  place-items: center;
-  padding: 32px;
-}
-
-.dashboard-error {
-  color: #b91c1c;
-}
-
-.dashboard-debug {
-  display: none;
-}
-
-@media (max-width: 1000px) {
-  .dashboard-header {
-    flex-direction: column;
-  }
-
-  .dashboard-summary {
-    width: 100%;
-  }
-
-  .summary-card {
-    flex: 1;
-  }
-
-  .dashboard-controls {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .layer-controls {
-    flex-wrap: wrap;
-  }
-}
-
-@media (max-width: 800px) {
-  .dashboard-content {
-    grid-template-columns: 1fr;
-  }
-
-  .dashboard-sidebar {
-    max-height: 400px;
-    border-top: 1px solid #e2e8f0;
-    border-left: 0;
-  }
-} */
-
 .market-dashboard {
-  min-height: 100%;
+  min-height: 100vh;
+  box-sizing: border-box;
   padding: 28px;
   background: #f8fafc;
   color: #0f172a;
+  overflow-y: auto;
 }
 
 /* --------------------------------------------------
@@ -492,7 +203,7 @@ Main dashboard content
   grid-template-columns: minmax(0, 1fr) 360px;
   max-width: 1400px;
   height: 620px;
-  min-height: 0;
+  min-height: 620px;
   margin: 0 auto 18px;
   overflow: hidden;
   border: 1px solid #e2e8f0;
@@ -534,8 +245,29 @@ Portfolio sidebar
   flex-direction: column;
   min-width: 0;
   min-height: 0;
+  height: 100%;
+  overflow: hidden;
   border-left: 1px solid #e2e8f0;
   background: #ffffff;
+}
+
+.dashboard-sidebar-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.sidebar-section {
+  flex: 0 0 auto;
+  min-width: 0;
+}
+
+.sidebar-section .store-list {
+  overflow: visible;
+  max-height: none;
 }
 
 .store-list-header {
@@ -563,6 +295,14 @@ Portfolio sidebar
   min-height: 0;
   overflow-y: auto;
 }
+
+.dashboard-sidebar .store-list {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
 
 /* --------------------------------------------------
 Store list items
@@ -643,7 +383,7 @@ Discovered stores
 
 .discovered-store-section {
   max-width: 1400px;
-  margin: 0 auto;
+  margin: 0 auto 28px;
   overflow: hidden;
   border: 1px solid #e2e8f0;
   border-radius: 14px;
@@ -654,6 +394,7 @@ Discovered stores
 .discovered-store-section .store-list {
   max-height: 360px;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .discovered-store-section .store-list-header {
